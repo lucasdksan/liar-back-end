@@ -28,7 +28,7 @@ export class RoomController {
                 roomId: room.toJSON().id,
             })
 
-            res.status(statusCode.ACCEPTED).json({ roomId: room.toJSON().id })
+            res.status(statusCode.ACCEPTED).json({ roomId: room.toJSON().id });
         } catch (error) {
             next(error);
         }
