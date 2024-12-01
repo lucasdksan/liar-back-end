@@ -17,7 +17,7 @@ export function UserGenerate(props: Props): UserProps{
         nickname: props.nickname ?? faker.internet.username(),
         password: props.password ?? faker.internet.password(),
         email: props.email ?? email,
-        valid: false,
+        valid: props.valid ?? false,
         createdAt: props.createdAt ?? new Date(),
         updatedAt: props.updatedAt ?? new Date(),
     }
