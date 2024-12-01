@@ -10,8 +10,12 @@ import { UserPresenter } from "../presenters/user-presenter";
 import { UserSearchPresenter } from "../presenters/user-search-presenter";
 import { AuthService } from "../../../auth/infrastructure/services/auth-service";
 import { SigninUser } from "../../application/usecases/signin-usecase";
+import { CustomLogger } from "../../../shared/infrastructure/providers/logger/custom-logger-provider";
+import { loggerFactory } from "../../../shared/infrastructure/providers/logger/logger-factory-provider";
 
 export class UserController implements Controller {
+    private readonly logger: CustomLogger;
+
     constructor(
         private readonly createUser: CreateUser.Usecase,
         private readonly deleteUser: DeleteUser.Usecase,
@@ -20,7 +24,9 @@ export class UserController implements Controller {
         private readonly updateUser: UpdateUser.Usecase,
         private readonly signinUser: SigninUser.UseCase,
         private readonly authService: AuthService,
-    ){}
+    ){
+        this.logger = loggerFactory();
+    }
 
     public post: RequestHandler = async (req, res, next)=> {
         const { 
@@ -38,6 +44,7 @@ export class UserController implements Controller {
     
             res.status(statusCode.CREATED).json(output);
         } catch (error) {
+            this.logger.error(`Error in userController post: ${error}`);
             next(error);
         }
     }
@@ -51,6 +58,7 @@ export class UserController implements Controller {
 
             res.status(statusCode.OK).json(userPresenter.presenter());
         } catch (error) {
+            this.logger.error(`Error in userController get: ${error}`);
             next(error);
         }
     }
@@ -64,6 +72,7 @@ export class UserController implements Controller {
 
             res.status(statusCode.OK).json(output);
         } catch (error) {
+            this.logger.error(`Error in userController put: ${error}`);
             next(error);
         }
     }
@@ -77,6 +86,7 @@ export class UserController implements Controller {
 
             res.status(statusCode.OK).json({ message: "User deleted" });
         } catch (error) {
+            this.logger.error(`Error in userController delete: ${error}`);
             next(error);
         }
     }
@@ -90,6 +100,7 @@ export class UserController implements Controller {
 
             res.status(statusCode.OK).json(userPresenter.presenter());
         } catch (error) {
+            this.logger.error(`Error in userController search: ${error}`);
             next(error);
         }
     }
@@ -104,8 +115,31 @@ export class UserController implements Controller {
             const output = await this.signinUser.execute({ email, password });
             const token =  this.authService.login({ email, id: output.id });
 
-            res.status(statusCode.ACCEPTED).json(token);
+            res.status(statusCode.ACCEPTED).json({ token });
         } catch (error) {
+            this.logger.error(`Error in userController signin: ${error}`);
+            next(error);
+        }
+    }
+
+    public signup: RequestHandler = async (req, res, next) => {
+        const { 
+            nickname,
+            password,
+            email,
+        } = req.body;
+        
+        try {
+            const output = await this.createUser.execute({
+                nickname,
+                password,
+                email,
+            });
+    
+            const token =  this.authService.login({ email, id: output.id });
+            res.status(statusCode.CREATED).json({ token });
+        } catch (error) {
+            this.logger.error(`Error in userController signup: ${error}`);
             next(error);
         }
     }

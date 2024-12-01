@@ -5,6 +5,7 @@ import { EnvConfig } from "./shared/infrastructure/config/env/env-config";
 import { loggerFactory } from "./shared/infrastructure/providers/logger/logger-factory-provider";
 import { serverConfig } from "./server-config";
 import { errorHandlerMiddleware } from "./shared/infrastructure/middlewares/error-handler-middleware";
+// import { authHandlerMiddleware } from "./auth/infrastructure/middlewares/auth-middleware";
 
 const server = express();
 const env = new EnvConfig();

@@ -12,40 +12,45 @@ export const authHandlerMiddleware = (
     req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
-) => {
+): void  => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-        return res.status(statusCode.UNAUTHORIZED).json({
+        res.status(statusCode.UNAUTHORIZED).json({
             status: "error",
             message: "No token provided",
         });
+        return;
     }
 
     const parts = authHeader.split(" ");
     if (parts.length !== 2) {
-        return res.status(statusCode.UNAUTHORIZED).json({
+        res.status(statusCode.UNAUTHORIZED).json({
             status: "error",
             message: "Token error",
         });
+        return;
     }
 
     const [schema, token] = parts;
 
     if (!/^Bearer$/i.test(schema)) {
-        return res.status(statusCode.UNAUTHORIZED).json({
+        res.status(statusCode.UNAUTHORIZED).json({
             status: "error",
             message: "Token malformatted",
         });
+        return;
     }
 
     const decoded = jwtProvider.verifyToken(token);
 
     if (!decoded || typeof decoded !== "object" || !("sub" in decoded)) {
-        return res.status(statusCode.UNAUTHORIZED).json({
+        res.status(statusCode.UNAUTHORIZED).json({
             status: "error",
             message: "Invalid token",
         });
+
+        return;
     }
 
     req.UserId = decoded.sub as string;

@@ -1,5 +1,7 @@
 import { Router, Request, Response, NextFunction, RequestHandler } from "express";
 import { EnvConfig } from "../shared/infrastructure/config/env/env-config";
+import { CustomLogger } from "../shared/infrastructure/providers/logger/custom-logger-provider";
+import { loggerFactory } from "../shared/infrastructure/providers/logger/logger-factory-provider";
 
 export type RouteConfig = {
     method: "get" | "post" | "put" | "delete";
@@ -9,9 +11,11 @@ export type RouteConfig = {
 
 export class Routes {
     private readonly _router: Router;
+    private readonly logger: CustomLogger;
 
     constructor(private readonly envConfig: EnvConfig) {
         this._router = Router();
+        this.logger = loggerFactory();
     }
 
     /**
@@ -34,6 +38,7 @@ export class Routes {
             try {
                 await handler(req, res, next);
             } catch (error) {
+                this.logger.error(`Error in wrapController: ${error}`);
                 next(error);
             }
         };
