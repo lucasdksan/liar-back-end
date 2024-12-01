@@ -7,7 +7,12 @@ describe("Env unit test", ()=> {
         expect(envConfig).toBeDefined();
     });
 
-    it("Shouda get port in env file", ()=> {
+    it("Shoulda get port in env file", ()=> {
         expect(envConfig.getPort()).toStrictEqual(8080);
+    });
+
+    it("should return a database URL as a string", () => {
+        const databaseUrl = envConfig.getDatabaseUrl();
+        expect(typeof databaseUrl).toBe("string");
     });
 });

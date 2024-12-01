@@ -12,7 +12,17 @@ export class EnvConfig implements IEnv {
         this.config = schema.parse({
             port: Number(process.env.PORT),
             databaseUrl: String(process.env.DATABASE_URL),
+            jwtSecret: String(process.env.JWT_SECRET),
+            jwtExpiresIn: String(process.env.JWT_EXPIRES_IN),
         });
+    }
+
+    getJwtExpiresIn(): string {
+        return this.config.jwtExpiresIn;
+    }
+    
+    getJwtSecret(): string {
+        return this.config.jwtSecret;
     }
     
     getDatabaseUrl(): string {
@@ -22,5 +32,4 @@ export class EnvConfig implements IEnv {
     getPort(): number {
         return this.config.port;
     }
-    
 }

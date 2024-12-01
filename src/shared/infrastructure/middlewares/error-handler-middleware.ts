@@ -8,10 +8,12 @@ export const errorHandlerMiddleware = (err: Error, req: Request, res: Response, 
             status: "error",
             message: err.message,
         });
+        return;
     } else {
         res.status(statusCode.INTERNAL_SERVER_ERROR).json({
             status: "error",
             message: "Internal Server Error",
         });
+        return;
     }
 };
