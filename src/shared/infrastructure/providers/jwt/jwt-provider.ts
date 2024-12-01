@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { CustomLogger } from "./logger/custom-logger-provider";
-import { loggerFactory } from "./logger/logger-factory-provider";
+import { CustomLogger } from "../logger/custom-logger-provider";
+import { loggerFactory } from "../logger/logger-factory-provider";
 
 export class JwtProvider {
     private readonly secret: string;

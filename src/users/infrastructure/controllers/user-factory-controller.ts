@@ -12,7 +12,7 @@ import { UpdateUser } from "../../application/usecases/update-user-usecase";
 import { BcryptjsHashUserProvider } from "../providers/bcrypt-hash-user-provider";
 import { SigninUser } from "../../application/usecases/signin-usecase";
 import { AuthService } from "../../../auth/infrastructure/services/auth-service";
-import { JwtProvider } from "../../../shared/infrastructure/providers/jwt-provider";
+import { JwtProvider } from "../../../shared/infrastructure/providers/jwt/jwt-provider";
 import { EnvConfig } from "../../../shared/infrastructure/config/env/env-config";
 
 export const userFactoryController = (prisma: PrismaService, env: EnvConfig): UserController => {

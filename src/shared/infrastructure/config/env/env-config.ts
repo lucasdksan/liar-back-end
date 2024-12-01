@@ -1,5 +1,5 @@
 import { z } from "zod";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 import { IEnv } from "./env-interface";
 import { schema } from "./env-schema";
 

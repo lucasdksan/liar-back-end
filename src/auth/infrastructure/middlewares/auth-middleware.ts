@@ -1,6 +1,9 @@
+import * as dotenv from "dotenv";
 import { Request, Response, NextFunction } from "express";
 import { statusCode } from "../../../shared/infrastructure/config/status-code";
-import { JwtProvider } from "../../../shared/infrastructure/providers/jwt-provider";
+import { JwtProvider } from "../../../shared/infrastructure/providers/jwt/jwt-provider";
+
+dotenv.config();
 
 export interface AuthenticatedRequest extends Request {
     UserId?: string;

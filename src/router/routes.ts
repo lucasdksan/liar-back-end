@@ -1,12 +1,24 @@
-import { Router, Request, Response, NextFunction, RequestHandler } from "express";
-import { EnvConfig } from "../shared/infrastructure/config/env/env-config";
+import { NextFunction, Request, RequestHandler, Response, Router } from "express";
 import { CustomLogger } from "../shared/infrastructure/providers/logger/custom-logger-provider";
+import { EnvConfig } from "../shared/infrastructure/config/env/env-config";
 import { loggerFactory } from "../shared/infrastructure/providers/logger/logger-factory-provider";
 
 export type RouteConfig = {
     method: "get" | "post" | "put" | "delete";
     path: string;
     handler: RequestHandler;
+};
+
+export type RouteMConfig = {
+    method: "get" | "post" | "put" | "delete";
+    path: string;
+    middlewares: RequestHandler[];
+    handler: RequestHandler;
+}
+
+export type RouteWithMiddlewareConfig = {
+    controller: any;
+    routes: RouteMConfig[];
 };
 
 export class Routes {
@@ -19,9 +31,9 @@ export class Routes {
     }
 
     /**
-    * Registra múltiplos controladores e suas rotas.
-    * @param controllersConfig - Lista de controladores e suas respectivas rotas.
-    */
+     * Registra múltiplos controladores e suas rotas.
+     * @param controllersConfig - Lista de controladores e suas respectivas rotas.
+     */
     registerControllers(controllersConfig: { controller: any; routes: RouteConfig[] }[]): void {
         controllersConfig.forEach(({ controller, routes }) => {
             routes.forEach((route) => {
@@ -31,8 +43,21 @@ export class Routes {
     }
 
     /**
-    * Captura erros de controladores assíncronos.
-    */
+     * Registra múltiplos controladores com middlewares.
+     * @param controllersWithMiddlewaresConfig - Lista de controladores com suas respectivas rotas e middlewares.
+     */
+    registerRouteWithMiddlewares(controllersWithMiddlewaresConfig: RouteWithMiddlewareConfig[]): void {
+        controllersWithMiddlewaresConfig.forEach(({ controller, routes }) => {
+            routes.forEach(({ method, path, middlewares, handler }) => {
+                const wrappedHandler = this.wrapController(handler.bind(controller));
+                this._router[method](path, ...middlewares, wrappedHandler);
+            });
+        });
+    }
+
+    /**
+     * Captura erros de controladores assíncronos.
+     */
     private wrapController(handler: RequestHandler) {
         return async (req: Request, res: Response, next: NextFunction) => {
             try {
