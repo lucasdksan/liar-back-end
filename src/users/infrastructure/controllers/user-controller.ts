@@ -8,6 +8,8 @@ import { UpdateUser } from "../../application/usecases/update-user-usecase";
 import { statusCode } from "../../../shared/infrastructure/config/status-code";
 import { UserPresenter } from "../presenters/user-presenter";
 import { UserSearchPresenter } from "../presenters/user-search-presenter";
+import { AuthService } from "../../../auth/infrastructure/services/auth-service";
+import { SigninUser } from "../../application/usecases/signin-usecase";
 
 export class UserController implements Controller {
     constructor(
@@ -16,6 +18,8 @@ export class UserController implements Controller {
         private readonly getUser: GetUser.Usecase,
         private readonly listUser: ListUser.Usecase,
         private readonly updateUser: UpdateUser.Usecase,
+        private readonly signinUser: SigninUser.UseCase,
+        private readonly authService: AuthService,
     ){}
 
     public post: RequestHandler = async (req, res, next)=> {
@@ -85,6 +89,22 @@ export class UserController implements Controller {
             const userPresenter = new UserSearchPresenter(output);
 
             res.status(statusCode.OK).json(userPresenter.presenter());
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    public signin: RequestHandler = async (req, res, next) => {
+        const {
+            password,
+            email,
+        } = req.body;
+
+        try {
+            const output = await this.signinUser.execute({ email, password });
+            const token =  this.authService.login({ email, id: output.id });
+
+            res.status(statusCode.ACCEPTED).json(token);
         } catch (error) {
             next(error);
         }

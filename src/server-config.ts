@@ -6,7 +6,7 @@ import { userFactoryController } from "./users/infrastructure/controllers/user-f
 
 export const serverConfig = (env: EnvConfig) => {
     const prisma = new PrismaService();
-    const userController = userFactoryController(prisma);
+    const userController = userFactoryController(prisma, env);
     const userRoutesList = userRoutes(userController);
     const routes = new Routes(env);
 

@@ -10,19 +10,26 @@ import { GetUser } from "../../application/usecases/get-user-usecase";
 import { ListUser } from "../../application/usecases/list-user-usecase";
 import { UpdateUser } from "../../application/usecases/update-user-usecase";
 import { BcryptjsHashUserProvider } from "../providers/bcrypt-hash-user-provider";
+import { SigninUser } from "../../application/usecases/signin-usecase";
+import { AuthService } from "../../../auth/infrastructure/services/auth-service";
+import { JwtProvider } from "../../../shared/infrastructure/providers/jwt-provider";
+import { EnvConfig } from "../../../shared/infrastructure/config/env/env-config";
 
-export const userFactoryController = (prisma: PrismaService): UserController => {
+export const userFactoryController = (prisma: PrismaService, env: EnvConfig): UserController => {
     const mapperOutput = new UserOutputDTO();
     const bcrypt = new BcryptjsHashUserProvider();
     const mapper = new UserModelMapper();
     const mapperPagination = new PaginationOutputMapper();
     const userRepository = new UserPrismaRepository(prisma, mapper);
+    const jwtProvider = new JwtProvider(env.getJwtSecret(), env.getJwtExpiresIn());
 
     return new UserController(
         new CreateUser.Usecase(userRepository, mapperOutput, bcrypt),
         new DeleteUser.Usecase(userRepository),
         new GetUser.Usecase(userRepository, mapperOutput),
         new ListUser.Usecase(userRepository, mapperOutput, mapperPagination),
-        new UpdateUser.Usecase(userRepository, mapperOutput)
+        new UpdateUser.Usecase(userRepository, mapperOutput),
+        new SigninUser.UseCase(userRepository, mapperOutput, bcrypt),
+        new AuthService(jwtProvider)
     );
 }

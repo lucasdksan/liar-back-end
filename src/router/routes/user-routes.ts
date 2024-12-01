@@ -7,4 +7,5 @@ export const userRoutes = (controller: UserController): RouteConfig[] => [
     { method: "post", path: "/user", handler: controller.post },
     { method: "delete", path: "/user/:id", handler: controller.delete },
     { method: "put", path: "/user/:id", handler: controller.put },
+    { method: "post", path: "/user/sigin", handler: controller.signin },
 ];
