@@ -4,7 +4,13 @@
   "description": "Projeto pessoal de um jogo simples.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsnd --transpile-only --ignore-watch node_nodules --respawn src/server.ts",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc",
+    "start": "node dist/server.js",
+    "start:prod": "npm run build && npm run start",
+    "watch": "tsc --watch",
+    "test": "npx jest"
   },
   "keywords": [],
   "author": "",
