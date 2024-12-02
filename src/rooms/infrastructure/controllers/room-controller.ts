@@ -5,23 +5,26 @@ import { AddPlayerToRoom } from "../../application/usecases/add-player-room-usec
 import { CreateRoom } from "../../application/usecases/create-room-usecase";
 import { ConflictError } from "../../../shared/domain/errors/conflict-error";
 import { statusCode } from "../../../shared/infrastructure/config/status-code";
+import { Game } from "../../application/usecases/game-usecase";
 
 export class RoomController {
     constructor(
         private readonly createRoomUsecase: CreateRoom.Usecase,
         private readonly addPlayerUsecase: AddPlayerToRoom.Usecase,
+        private readonly gameUsecase: Game.Usecase,
         private readonly socketProvider: SocketProvider,
     ){}
 
     async createRoom(req: AuthenticatedRequest, res: Response, next: NextFunction) {
         try {
-            const { UserId } = req;
-
-            if(!UserId) throw new ConflictError("Id not find");
+            const { UserId, body } = req;
+            const { nickname, socketId } = body;
+            
+            if(!UserId || !nickname || !socketId) throw new ConflictError("Data invalid");
 
             const hostId = UserId;
 
-            const { room } = await this.createRoomUsecase.execute({ hostId });
+            const { room } = await this.createRoomUsecase.execute({ hostId, nickname, socketId });
 
             this.socketProvider.emitToRoom(room.toJSON().id, "room-created", {
                 message: "Nova sala criada!",
@@ -39,7 +42,7 @@ export class RoomController {
             const { UserId, body } = req;
             const { roomId, nickname, socketId } = body;
             
-            if(!UserId) throw new ConflictError("Id not find");
+            if(!UserId || !roomId || !nickname || !socketId) throw new ConflictError("Data invalid");
 
             const user = { id: UserId, nickname, socketId };
 
@@ -51,6 +54,18 @@ export class RoomController {
             });
 
             res.status(statusCode.ACCEPTED).json({ message: "Jogador adicionado com sucesso!" });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async gameRoom(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+
+            await this.gameUsecase.execute({ roomId: id });
+
+            res.status(201).json({ data: "ID" });
         } catch (error) {
             next(error);
         }

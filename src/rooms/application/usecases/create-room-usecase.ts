@@ -1,10 +1,15 @@
 import { Usecase as DefaultUsecase } from "../../../shared/application/usecases/usecase";
+import { PlayerEntity } from "../../domain/entities/players/player-entity";
 import { RoomEntity } from "../../domain/entities/rooms/room-entity";
 import { RoomRepository } from "../../domain/repositories/room-repository";
 import { RoomOutput, RoomOutputDTO } from "../dtos/room-output-dto";
 
 export namespace CreateRoom {
-    export type Input = { hostId: string; };
+    export type Input = { 
+        hostId: string; 
+        socketId: string;
+        nickname: string; 
+    };
 
     export type Output = RoomOutput;
 
@@ -15,8 +20,11 @@ export namespace CreateRoom {
         ){}
 
         async execute(input: Input): Promise<Output> {
-            const room = new RoomEntity({ hostId: input.hostId });
+            const { hostId, ...values } = input;
+            const room = new RoomEntity({ hostId });
+            const playerEntity = new PlayerEntity({ ...values }, hostId);
 
+            room.addPlayer(playerEntity.toJSON());
             await this.roomRepository.create(room);
 
             return this.mapper.toOutput(room);

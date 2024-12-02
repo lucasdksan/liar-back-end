@@ -24,7 +24,6 @@ export class SocketProvider {
     }
 
     public emitToRoom(roomId: string, eventName: string, data: any) {
-        console.log({ roomId, eventName, data })
         this.io.to(roomId).emit(eventName, data);
     }
 }

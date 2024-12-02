@@ -1,3 +1,4 @@
+import { NotFoundError } from "../../../../../shared/domain/errors/not-found-error";
 import { RoomEntity } from "../../../../domain/entities/rooms/room-entity";
 import { RoomRepository } from "../../../../domain/repositories/room-repository";
 
@@ -8,8 +9,12 @@ export class RoomInMemoryRepository implements RoomRepository {
         this.rooms.set(room.id, room);
     }
 
-    async findById(id: string): Promise<RoomEntity | null> {
-        return this.rooms.get(id) || null;
+    async findById(id: string): Promise<RoomEntity> {
+        const room = this.rooms.get(id);
+
+        if(!room) throw new NotFoundError("Room not exist");
+
+        return room;
     }
 
     async update(room: RoomEntity): Promise<void> {

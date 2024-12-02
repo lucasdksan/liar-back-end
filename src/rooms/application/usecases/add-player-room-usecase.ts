@@ -24,6 +24,7 @@ export namespace AddPlayerToRoom {
         
         async execute(input: Input): Promise<Output> {
             const { user, roomId } = input;
+
             const room = await this.roomRepository.findById(roomId);
 
             if(!room) throw new InvalidCredentialsError("Room not find");
