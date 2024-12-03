@@ -11,9 +11,9 @@ import { ListUser } from "../../application/usecases/list-user-usecase";
 import { UpdateUser } from "../../application/usecases/update-user-usecase";
 import { BcryptjsHashUserProvider } from "../providers/bcrypt-hash-user-provider";
 import { SigninUser } from "../../application/usecases/signin-usecase";
-import { AuthService } from "../../../auth/infrastructure/services/auth-service";
-import { JwtProvider } from "../../../shared/infrastructure/providers/jwt/jwt-provider";
 import { EnvConfig } from "../../../shared/infrastructure/config/env/env-config";
+import { AuthService } from "../../../auth/application/services/auth-service";
+import { JwtProvider } from "../../../auth/infrastructure/providers/jwt-provider";
 
 export const userFactoryController = (prisma: PrismaService, env: EnvConfig): UserController => {
     const mapperOutput = new UserOutputDTO();

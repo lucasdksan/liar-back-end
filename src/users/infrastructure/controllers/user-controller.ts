@@ -8,10 +8,10 @@ import { UpdateUser } from "../../application/usecases/update-user-usecase";
 import { statusCode } from "../../../shared/infrastructure/config/status-code";
 import { UserPresenter } from "../presenters/user-presenter";
 import { UserSearchPresenter } from "../presenters/user-search-presenter";
-import { AuthService } from "../../../auth/infrastructure/services/auth-service";
 import { SigninUser } from "../../application/usecases/signin-usecase";
 import { CustomLogger } from "../../../shared/infrastructure/providers/logger/custom-logger-provider";
 import { loggerFactory } from "../../../shared/infrastructure/providers/logger/logger-factory-provider";
+import { AuthService } from "../../../auth/application/services/auth-service";
 
 export class UserController implements Controller {
     private readonly logger: CustomLogger;

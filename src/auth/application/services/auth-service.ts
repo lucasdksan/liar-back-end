@@ -1,5 +1,5 @@
 import { JwtPayload } from "jsonwebtoken";
-import { JwtProvider } from "../../../shared/infrastructure/providers/jwt/jwt-provider";
+import { JwtProvider } from "../../infrastructure/providers/jwt-provider";
 
 export class AuthService {
     constructor(

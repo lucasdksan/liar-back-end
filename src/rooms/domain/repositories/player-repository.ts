@@ -1,5 +1,8 @@
-import { PlayerEntity } from "../entities/players/player-entity";
+export type TPlayer = {
+    id: string;
+    nickname: string;
+};
 
 export interface PlayerRepository {
-    findById(id: string): Promise<PlayerEntity>;
+    findById(id: string): Promise<TPlayer>;
 }
