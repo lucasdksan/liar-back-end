@@ -24,7 +24,7 @@ export namespace CreateRoom {
             const room = new RoomEntity({ hostId });
             const playerEntity = new PlayerEntity({ ...values }, hostId);
 
-            room.addPlayer(playerEntity.toJSON());
+            room.addPlayer({ alive: true, cards: [], ...playerEntity.toJSON() });
             await this.roomRepository.create(room);
 
             return this.mapper.toOutput(room);

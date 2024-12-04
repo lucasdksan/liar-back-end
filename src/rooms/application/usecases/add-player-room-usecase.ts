@@ -34,7 +34,7 @@ export namespace AddPlayerToRoom {
             
             const playerEntity = new PlayerEntity({ ...values }, id);
 
-            room.addPlayer(playerEntity.toJSON());
+            room.addPlayer({ alive: true, cards: [], ...playerEntity.toJSON() });
 
             await this.roomRepository.update(room);
         }

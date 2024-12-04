@@ -41,8 +41,10 @@ export class UserController implements Controller {
                 password,
                 email,
             });
+
+            const userPresenter = new UserPresenter(output);
     
-            res.status(statusCode.CREATED).json(output);
+            res.status(statusCode.CREATED).json(userPresenter.presenter());
         } catch (error) {
             this.logger.error(`Error in userController post: ${error}`);
             next(error);
@@ -69,8 +71,9 @@ export class UserController implements Controller {
         
         try {
             const output = await this.updateUser.execute({ id, ...props });
+            const userPresenter = new UserPresenter(output);
 
-            res.status(statusCode.OK).json(output);
+            res.status(statusCode.OK).json(userPresenter.presenter());
         } catch (error) {
             this.logger.error(`Error in userController put: ${error}`);
             next(error);
