@@ -15,6 +15,7 @@ describe("UserMapperModel unit test", ()=> {
         const valid = true;
         const nickname = faker.person.fullName();
         const password = faker.internet.password();
+        const score = Math.floor(Math.random() * 100);
         const createdAt = new Date();
         const updatedAt = new Date();
 
@@ -23,6 +24,7 @@ describe("UserMapperModel unit test", ()=> {
             nickname,
             password,
             email,
+            score,
             valid,
             createdAt,
             updatedAt,
@@ -31,6 +33,7 @@ describe("UserMapperModel unit test", ()=> {
             nickname,
             password,
             email,
+            score,
             valid,
             createdAt,
             updatedAt,

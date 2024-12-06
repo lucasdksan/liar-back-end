@@ -5,6 +5,7 @@ export type UserOutput = {
     id: string;
     nickname: string;
     email: string;
+    score: number;
     valid: boolean;
 }
 

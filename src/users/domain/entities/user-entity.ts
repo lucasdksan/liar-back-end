@@ -6,6 +6,7 @@ export type UserProps = {
     email: string;
     nickname: string;
     password: string;
+    score?: number;
     valid: boolean;
     createdAt?: Date;
     updatedAt?: Date;

@@ -2,7 +2,7 @@ import { Usecase as DefaultUsecase } from "../../../shared/application/usecases/
 import { UserRepository } from "../../domain/repositories/user-repository";
 
 export namespace DeleteUser {
-    export type Input = { id: string; admin: string; };
+    export type Input = { id: string; };
 
     export type Output = void;
 

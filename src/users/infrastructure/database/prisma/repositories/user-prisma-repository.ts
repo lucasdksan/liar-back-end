@@ -15,6 +15,21 @@ export class UserPrismaRepository implements UserRepository.Repository {
         private readonly mapper: UserModelMapper
     ) {}
 
+    async topTenUsers(): Promise<UserEntity[]> {
+        try {
+            const users = await this.prismaService.users.findMany();
+            const usersForScore = users.sort((a, b)=> {
+                if(a.score < b.score) return -1;
+                if(a.score > b.score) return 1;
+                return 0;
+            });
+
+            return usersForScore.slice(0, 10).map((user) => this.mapper.toEntity(user));
+        } catch (error) {
+            throw new NotFoundError("Erro in list top ten players.");
+        }
+    }
+
     async findByEmail(email: string): Promise<UserEntity> {
         try {
             const user = await this.prismaService.users.findUnique({

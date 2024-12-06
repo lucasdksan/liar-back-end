@@ -12,6 +12,8 @@ import { SigninUser } from "../../application/usecases/signin-usecase";
 import { CustomLogger } from "../../../shared/infrastructure/providers/logger/custom-logger-provider";
 import { loggerFactory } from "../../../shared/infrastructure/providers/logger/logger-factory-provider";
 import { AuthService } from "../../../auth/application/services/auth-service";
+import { GetTopTen } from "../../application/usecases/get-top-ten-users-usecase";
+import { UserTopTenPresenter } from "../presenters/user-top-ten-presenter";
 
 export class UserController implements Controller {
     private readonly logger: CustomLogger;
@@ -23,6 +25,7 @@ export class UserController implements Controller {
         private readonly listUser: ListUser.Usecase,
         private readonly updateUser: UpdateUser.Usecase,
         private readonly signinUser: SigninUser.UseCase,
+        private readonly getTopTen: GetTopTen.Usecase,
         private readonly authService: AuthService,
     ){
         this.logger = loggerFactory();
@@ -82,10 +85,9 @@ export class UserController implements Controller {
     
     public delete: RequestHandler = async (req, res, next)=> {
         const { id } = req.params;
-        const { admin } = req.body;
 
         try {
-            await this.deleteUser.execute({ id, admin });
+            await this.deleteUser.execute({ id });
 
             res.status(statusCode.OK).json({ message: "User deleted" });
         } catch (error) {
@@ -143,6 +145,18 @@ export class UserController implements Controller {
             res.status(statusCode.CREATED).json({ token });
         } catch (error) {
             this.logger.error(`Error in userController signup: ${error}`);
+            next(error);
+        }
+    }
+
+    public topTen: RequestHandler = async (req, res, next) => {
+        try {
+            const output = await this.getTopTen.execute();
+            const userPresenterList = new UserTopTenPresenter(output);
+
+            res.status(statusCode.OK).json(userPresenterList.presenter());
+        } catch (error) {
+            this.logger.error(`Error in userController get: ${error}`);
             next(error);
         }
     }

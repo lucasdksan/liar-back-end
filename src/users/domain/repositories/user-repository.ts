@@ -16,5 +16,6 @@ export namespace UserRepository {
         SearchableRepositoryInterface<UserEntity, Filter, SearchParams, SearchResult> {
         findByEmail(email: string): Promise<UserEntity>;
         emailExists(email: string): Promise<void>;
+        topTenUsers(): Promise<UserEntity[]>;
     }
 }

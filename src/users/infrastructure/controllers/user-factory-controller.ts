@@ -14,6 +14,7 @@ import { SigninUser } from "../../application/usecases/signin-usecase";
 import { EnvConfig } from "../../../shared/infrastructure/config/env/env-config";
 import { AuthService } from "../../../auth/application/services/auth-service";
 import { JwtProvider } from "../../../auth/infrastructure/providers/jwt-provider";
+import { GetTopTen } from "../../application/usecases/get-top-ten-users-usecase";
 
 export const userFactoryController = (prisma: PrismaService, env: EnvConfig): UserController => {
     const mapperOutput = new UserOutputDTO();
@@ -30,6 +31,7 @@ export const userFactoryController = (prisma: PrismaService, env: EnvConfig): Us
         new ListUser.Usecase(userRepository, mapperOutput, mapperPagination),
         new UpdateUser.Usecase(userRepository, mapperOutput),
         new SigninUser.UseCase(userRepository, mapperOutput, bcrypt),
+        new GetTopTen.Usecase(userRepository, mapperOutput),
         new AuthService(jwtProvider)
     );
 }

@@ -3,6 +3,7 @@ import { RouteConfig } from "../routes";
 
 export const userRoutes = (controller: UserController): RouteConfig[] => [
     { method: "get", path: "/user/:id", handler: controller.get },
+    { method: "get", path: "/top-ten", handler: controller.topTen },
     { method: "get", path: "/user-search", handler: controller.search },
     { method: "post", path: "/user", handler: controller.post },
     { method: "post", path: "/user/sigin", handler: controller.signin },

@@ -11,6 +11,7 @@ export class UserModelMapper extends ModelMapper<Users, UserEntity> {
             email: model.email,
             nickname: model.nickname,
             valid: model.valid,
+            score: model.score,
             password: model.password,
             createdAt: model.createdAt,
             updatedAt: model.updatedAt,
