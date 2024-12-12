@@ -3,6 +3,10 @@ export abstract class Memory<ObjectType extends { id: string }> {
 
     constructor(){}
 
+    set createMany(values: ObjectType[]) {
+        this.memory = values;
+    }
+
     list() {
         return this.memory;
     }
@@ -30,7 +34,7 @@ export abstract class Memory<ObjectType extends { id: string }> {
     updateById(id: string, newValue: ObjectType) {
         const index = this.memory.findIndex(item => item.id === id);
 
-        if(index !== -1) this.memory[index] = newValue;
+        if(index !== -1) this.memory[index] = newValue
 
         throw new Error("Error updating object");
     }
