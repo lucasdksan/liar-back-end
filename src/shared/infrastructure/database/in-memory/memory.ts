@@ -1,4 +1,4 @@
-export class Memory<ObjectType extends { id: string; }> {
+export abstract class Memory<ObjectType extends { id: string }> {
     private memory: ObjectType[] = [];
 
     constructor(){}
@@ -21,17 +21,17 @@ export class Memory<ObjectType extends { id: string; }> {
 
     removeById(id: string) {
         const index = this.memory.findIndex(item => item.id === id);
-        
-        if (index !== -1) this.memory.splice(index, 1);
-        
+
+        if(index !== -1) this.memory.splice(index, 1);
+
         throw new Error("Error removing object");
     }
 
     updateById(id: string, newValue: ObjectType) {
         const index = this.memory.findIndex(item => item.id === id);
-        
-        if (index !== -1) this.memory[index] = newValue;
-        
+
+        if(index !== -1) this.memory[index] = newValue;
+
         throw new Error("Error updating object");
     }
 

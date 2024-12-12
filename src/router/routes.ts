@@ -9,7 +9,7 @@ export type RouteConfig = {
     handler: RequestHandler;
 };
 
-export type RouteMConfig = {
+export type RouteMiddlewareConfig = {
     method: "get" | "post" | "put" | "delete";
     path: string;
     middlewares: RequestHandler[];
@@ -18,7 +18,7 @@ export type RouteMConfig = {
 
 export type RouteWithMiddlewareConfig = {
     controller: any;
-    routes: RouteMConfig[];
+    routes: RouteMiddlewareConfig[];
 };
 
 export class Routes {
