@@ -8,18 +8,24 @@ export type PlayerProps = {
 }
 
 export type RoomProps = {
-    open: true;
+    clearedToEnter: boolean;
     player?: PlayerProps;
 }
 
 export class RoomEntity extends Entity<RoomProps> {
     private players: PlayerProps[];
     
-    constructor(props: RoomProps, id?: string){
+    constructor(public props: RoomProps, id?: string){
         const playerArr = props.player ? [{ ...props.player }] : [];
         
+        RoomEntity.validate(props);
+
         super(props, id);
         this.players = playerArr;
+    }
+
+    closeRoomForNewPlayer() {
+        this.props.clearedToEnter = false;
     }
 
     addPlayer(player: PlayerProps){
@@ -43,6 +49,8 @@ export class RoomEntity extends Entity<RoomProps> {
             ...this.props,
             ...propsToUpdate,
         }
+
+        RoomEntity.validate(updatedProps);
 
         this.setProps(updatedProps);
     }
