@@ -9,24 +9,40 @@ export class RoomInMemoryRepository implements RoomRepository {
         private readonly mapper: RoomModelMapper,
     ){}
     
-    insert(room: RoomEntity): Promise<void> {
-        throw new Error("Method not implemented.");
+    async insert(room: RoomEntity): Promise<void> {
+        const { id, clearedToEnter, player } = room.toJSON();
+
+        this.inMemoryService.set({
+            id, clearedToEnter, player
+        });
+
+        return;
     }
 
-    findById(id: string): Promise<RoomEntity> {
-        throw new Error("Method not implemented.");
+    async findById(id: string): Promise<RoomEntity> {
+        return this._get(id);
     }
 
-    findAll(): Promise<RoomEntity[]> {
-        throw new Error("Method not implemented.");
+    async findAll(): Promise<RoomEntity[]> {
+        return this.inMemoryService.list().map(room => this.mapper.toEntity(room));
     }
 
-    update(room: RoomEntity): Promise<void> {
-        throw new Error("Method not implemented.");
+    async update(room: RoomEntity): Promise<void> {
+        const { id, ...roomObject } = room.toJSON();
+        const roomSelect = this._get(id);
+
+        this.inMemoryService.updateById(roomSelect.toJSON().id, { id, ...roomObject });
     }
     
-    delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async delete(id: string): Promise<void> {
+        this.inMemoryService.removeById(id);
+        
+        return;
+    }   
+
+    private _get(id: string){
+        const room = this.inMemoryService.findById(id);
+
+        return this.mapper.toEntity(room);
     }
-    
 }
