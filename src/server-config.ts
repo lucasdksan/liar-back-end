@@ -1,4 +1,4 @@
-import { MemoryRoomDatabase } from "./room/infrastructure/database/memory-room/memory-room-database";
+import { MemoryRoomDatabase } from "./room/infrastructure/database/in-memory/memory-room/memory-room-database";
 import { Routes } from "./router/routes";
 import { userRoutes } from "./router/routes/user-routes";
 import { EnvConfig } from "./shared/infrastructure/config/env/env-config";
