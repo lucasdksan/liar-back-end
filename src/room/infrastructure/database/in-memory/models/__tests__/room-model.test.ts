@@ -16,6 +16,7 @@ describe("RoomMapperModel unit test", () => {
             player: {
                 id: "a7e5a1c3-2dfb-4e99-8c4e-78a4976b02b4",
                 nickname: "momonga",
+                socketId: "1234-4321-asdf-fsaw",
             }
         }
 
@@ -23,6 +24,7 @@ describe("RoomMapperModel unit test", () => {
             player: {
                 id: "a7e5a1c3-2dfb-4e99-8c4e-78a4976b02b4",
                 nickname: "momonga",
+                socketId: "1234-4321-asdf-fsaw",
             },
             clearedToEnter: true,
         }), "b7g5q1c3-2age-4c99-8d4a-78a4976b02b4");

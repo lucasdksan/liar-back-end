@@ -4,12 +4,13 @@ import { PlayerProps, RoomEntity } from "../../domain/entities/room-entity";
 export type RoomOutput = {
     clearedToEnter: boolean; 
     player: PlayerProps;
+    id: string;
 }
 
 export class RoomOutputDTO implements OutputMapperDTO<RoomEntity, RoomOutput> {
     toOutput(entity: RoomEntity): RoomOutput {
-        const { clearedToEnter, player } = entity.toJSON();
+        const { id, clearedToEnter, player } = entity.toJSON();
 
-        return { clearedToEnter, player };
+        return { clearedToEnter, player, id };
     }
 }

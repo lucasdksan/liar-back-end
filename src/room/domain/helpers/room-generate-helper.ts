@@ -12,6 +12,7 @@ export function RoomGenerate(props: Props): RoomProps{
         player: props.player ?? {
             id: faker.database.mongodbObjectId(),
             nickname: faker.internet.username(),
+            socketId: faker.database.mongodbObjectId(),
         }
     }
 }

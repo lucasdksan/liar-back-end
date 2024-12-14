@@ -14,7 +14,7 @@ describe("RoomOutputDTO unit test", ()=> {
     });
 
     test("Should convert output", ()=>{
-        const { id, ...output } = entity.toJSON();
+        const { ...output } = entity.toJSON();
     
         const result = sut.toOutput(entity);
 

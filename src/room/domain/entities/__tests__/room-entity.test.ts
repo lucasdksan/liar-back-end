@@ -25,7 +25,8 @@ describe("RoomEntity unit test", ()=> {
     test("Should add player in room and test len method", ()=> {
         sut.addPlayer({
             id: "asdasd-asdasda-1231321-5a56s4d",
-            nickname: "momonga"
+            nickname: "momonga",
+            socketId: "dasfasd-ad46516da-asd16a2sd"
         });
 
         expect(sut.len()).toEqual(2);
@@ -34,21 +35,25 @@ describe("RoomEntity unit test", ()=> {
     test("Should validate quantity players", ()=> {
         sut.addPlayer({
             id: "asdasd-asdasda-1231321-5a56s4d",
-            nickname: "momonga"
+            nickname: "momonga",
+            socketId: "dasfasd-ad46516da-asd1asdasd"
         });
         sut.addPlayer({
             id: "asdasd-1231321-5a56s4d",
-            nickname: "lucasdksan"
+            nickname: "lucasdksan",
+            socketId: "dasfasd-ad46gsdfgsdfa-asd16a2sd"
         });
         sut.addPlayer({
             id: "1231321-5a56s4d",
-            nickname: "modex"
+            nickname: "modex",
+            socketId: "dasasdasd-adadsasda516da-5421asd-asd16a2sd"
         });
 
         expect(()=> {
             sut.addPlayer({
                 id: "1231321-5a56s4d",
-                nickname: "modex"
+                nickname: "modex",
+                socketId: "dasasdasd-adadsasda516da-5421asd-asd16a2sd"
             })
         }).toThrow(EntityValidationError);
     });

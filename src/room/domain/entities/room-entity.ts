@@ -5,6 +5,7 @@ import { schema } from "./room-schema-entity";
 export type PlayerProps = {
     id: string;
     nickname: string;
+    socketId: string;
 }
 
 export type RoomProps = {
