@@ -7,16 +7,18 @@ import { loggerFactory } from "./shared/infrastructure/providers/logger/logger-f
 import { serverConfig } from "./server-config";
 import { errorHandlerMiddleware } from "./shared/infrastructure/middlewares/error-handler-middleware";
 import { corsOptions } from "./shared/infrastructure/config/cors-options";
-import { SocketProvider } from "./shared/infrastructure/providers/socket-provider";
+import { SocketIoProvider } from "./shared/infrastructure/providers/socket-provider";
 // import { authHandlerMiddleware } from "./auth/infrastructure/middlewares/auth-middleware";
 
 const server = express();
 const app = http.createServer(server);
 const env = new EnvConfig();
 const logger = loggerFactory();
-const socketProvider = new SocketProvider(app, env);
-const { routes } = serverConfig(env, socketProvider);
+const socketIoProvider = new SocketIoProvider(app);
+const { routes } = serverConfig(env, socketIoProvider);
 const port = env.getPort();
+
+socketIoProvider.initialize();
 
 server.use(helmet());
 server.use(cors(corsOptions(env)));

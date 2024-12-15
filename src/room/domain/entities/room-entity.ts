@@ -25,24 +25,10 @@ export class RoomEntity extends Entity<RoomProps> {
         this.players = playerArr;
     }
 
-    closeRoomForNewPlayer() {
-        this.props.clearedToEnter = false;
-    }
-
     addPlayer(player: PlayerProps){
         this.validateQuantityPlayers();
 
         this.players.push(player);
-    }
-
-    validateQuantityPlayers() {
-        if(this.len() === 4) {
-            throw new EntityValidationError("Room limit player");
-        }
-    }
-
-    len(){
-        return this.players.length;
     }
 
     update(propsToUpdate: Partial<RoomProps>) {
@@ -54,6 +40,21 @@ export class RoomEntity extends Entity<RoomProps> {
         RoomEntity.validate(updatedProps);
 
         this.setProps(updatedProps);
+    }
+
+    private len(){
+        return this.players.length;
+    }
+
+    private closeRoomForNewPlayer() {
+        this.props.clearedToEnter = false;
+    }
+
+    private validateQuantityPlayers() {
+        if(this.len() === 4) {
+            this.closeRoomForNewPlayer();
+            throw new EntityValidationError("Room limit player");
+        }
     }
 
     static validate(props: RoomProps) {

@@ -17,7 +17,7 @@ describe("RoomEntity unit test", ()=> {
     });
 
     test("Should close room for new Players", ()=> {
-        sut.closeRoomForNewPlayer();
+        sut["closeRoomForNewPlayer"]();
 
         expect(sut.props.clearedToEnter).toBeFalsy();
     });
@@ -29,7 +29,7 @@ describe("RoomEntity unit test", ()=> {
             socketId: "dasfasd-ad46516da-asd16a2sd"
         });
 
-        expect(sut.len()).toEqual(2);
+        expect(sut["len"]()).toEqual(2);
     });
 
     test("Should validate quantity players", ()=> {
